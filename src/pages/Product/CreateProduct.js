@@ -1,24 +1,49 @@
 import React from 'react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import {addProduct} from '../../features/productsSlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct } from '../../features/productsSlice';
 import { useNavigate } from 'react-router-dom';
+import {deleteItem} from '../../features/productsSlice'
 
 const CreateProduct = () => {
-    
+	const products = useSelector(state => state.products.products);
+
 	const [product, setProduct] = useState({
 		name: '',
-		quantity: '',
-		price: '',
-    });
-    const dispatch = useDispatch();
-    const navigate = useNavigate()
+		quantity: 0,
+		price: 0,
+		totalMoney: 0,
+	});
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(addProduct(product))
-        navigate('/product')
-    };
+	const handleSubmit = e => {
+		e.preventDefault();
+
+		const item = products.filter(item => item.name === product.name);
+		if (item.length === 0) {
+			dispatch(
+				addProduct({	
+					name: product.name,
+					quantity: product.quantity,
+					price: product.price,
+					totalMoney: product.quantity * product.price,
+				})
+			);
+			navigate('/product');
+		} else {
+			dispatch(deleteItem(product.name))
+			dispatch(
+				addProduct({
+					name: product.name,
+					quantity: +product.quantity + +item[0].quantity,
+					price: product.price,
+					totalMoney: product.quantity * product.price,
+				})
+			);
+			navigate('/product');
+		}
+	};
 
 	return (
 		<div style={{ textAlign: 'center' }}>
@@ -40,8 +65,8 @@ const CreateProduct = () => {
 						onChange={e => setProduct({ ...product, quantity: e.target.value })}
 						type='number'
 					/>
-                </div>
-                <div>
+				</div>
+				<div>
 					<input
 						placeholder='price'
 						required
@@ -50,8 +75,10 @@ const CreateProduct = () => {
 					/>
 				</div>
 				<button type='submit'>Create</button>
-            </form>
-            <button onClick={()=>navigate('/product')} type='button'>Back</button>
+			</form>
+			<button onClick={() => navigate('/product')} type='button'>
+				Back
+			</button>
 		</div>
 	);
 };
