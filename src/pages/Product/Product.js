@@ -1,14 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, getTotalMoney, checkOut } from '../../features/productsSlice';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 const Product = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const products = useSelector(state => state.products.products);
 	const cart = useSelector(state => state.products.cart);
-	const money = useSelector(state => state.products.total);
 	let totalMoney = 0;
 
 	const handleAddCart = index => {
@@ -17,6 +16,7 @@ const Product = () => {
 
 	useEffect(() => {
 		cart.forEach(element => {
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 			totalMoney += element.totalMoney;
 		});
 		dispatch(getTotalMoney(totalMoney));
