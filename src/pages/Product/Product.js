@@ -30,6 +30,7 @@ const Product = () => {
 		<div style={{ textAlign: 'center' }}>
 			<h1>Shopping Cart</h1>
 			<button onClick={() => navigate('/create')}>Create Product</button>
+			<button onClick={() => navigate('/home')}>HOme</button>
 			<hr />
 			<h3>Products</h3>
 			<ul>

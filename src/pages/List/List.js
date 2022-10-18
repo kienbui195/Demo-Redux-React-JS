@@ -13,7 +13,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { setList } from '../../features/listUserSlice';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -55,6 +55,7 @@ const List = () => {
 		getUsersApi()
 			.then(res => dispatch(setList(res.data)))
 			.catch(err => console.log(err.message));
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	
@@ -75,6 +76,12 @@ const List = () => {
 							</Button>
 							<Button onClick={() => navigate('/product')} variant='outlined' color='info'>
 								Shopping Cart
+							</Button>
+							<Button onClick={() => navigate('/news')} variant='outlined' color='info'>
+								Hacker News
+							</Button>
+							<Button onClick={() => navigate('/blog')} variant='outlined' color='info'>
+								Blog
 							</Button>
 							<div>
 								<TableContainer component={Paper}>
